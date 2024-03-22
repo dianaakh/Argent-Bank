@@ -4,8 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import UserAccount from './pages/UserAccount';
 import Error404 from './pages/Page404';
-
-
+import PrivateRoute from './components/privateRoute';
 
 const App = () => {
   return (
@@ -13,10 +12,12 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/user-account' element={<UserAccount />} />
+        <Route element={<PrivateRoute />}>
+          <Route path='/user-account' element={<UserAccount />} />
+        </Route>
         <Route path='*' element={<Error404 />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 };
 
