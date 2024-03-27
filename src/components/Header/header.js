@@ -18,20 +18,20 @@ const Header = () => {
     navigate('/');
   };
 
- useEffect(() => {
-  if (token) {
-    dispatch(fetchUserProfile());
-  }
-}, [dispatch, token]);
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, token]);
 
+  return (
+    <nav className='main-nav'>
+      <NavLink to='/' className='main-nav-logo'>
+        <img src={logo} alt='Argent Bank Logo' className='main-nav-logo-image' />
+        <h1 className='sr-only'>Argent Bank</h1>
+      </NavLink>
 
-  if (token) {
-    return (
-      <nav className='main-nav'>
-        <NavLink to='/' className='main-nav-logo'>
-          <img src={logo} alt='Argent Bank Logo' className='main-nav-logo-image' />
-          <h1 className='sr-only'>Argent Bank</h1>
-        </NavLink>
+      {token ? (
         <div className='navbar_loginSuccess'>
           <NavLink to='/user-account' className='main-nav-item'>
             <i className='fa fa-user-circle'></i>
@@ -42,24 +42,14 @@ const Header = () => {
             Sign Out
           </NavLink>
         </div>
-      </nav>
-    );
-  } else {
-    return (
-      <nav className='main-nav'>
-        <NavLink to='/' className='main-nav-logo'>
-          <img src={logo} alt='Argent Bank Logo' className='main-nav-logo-image' />
-          <h1 className='sr-only'>Argent Bank</h1>
+      ) : (
+        <NavLink to='/login' className='main-nav-item'>
+          <i className='fa fa-user-circle'></i>
+          Sign In
         </NavLink>
-        <div>
-          <NavLink to='/login' className='main-nav-item'>
-            <i className='fa fa-user-circle'></i>
-            Sign In
-          </NavLink>
-        </div>
-      </nav>
-    );
-  };
+      )}
+    </nav>
+  );
 };
 
 

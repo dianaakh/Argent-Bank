@@ -17,10 +17,9 @@ const profileReducer = (state = initialState, action) => {
             };
 
         case UPDATE_USER_NAME:
-            const newProfile = { ...state.userProfile, userName: action.payload };
             return {
                 ...state,
-                userProfile: newProfile,
+                userProfile: { ...state.userProfile, userName: action.payload }
             };
 
         default:

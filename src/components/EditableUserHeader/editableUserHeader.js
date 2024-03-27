@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './editableUserHeader.css'
 import { fetchUserProfile } from '../../redux/actions/profile.action';
@@ -10,7 +10,9 @@ const EditableUserHeader = () => {
   const [isEditing, setIsEditing] = useState(false);
 
 
-  dispatch(fetchUserProfile());
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
 
   return (
     <div className="header bg-dark">
