@@ -6,8 +6,9 @@ export const LOGOUT_USER = "LOGOUT_USER";
 
 
 // Action pour gérer la connexion réussie de l'utilisateur
-export const userLoginSuccess = () => ({
+export const userLoginSuccess = (token) => ({
   type: USER_LOGIN_SUCCESS,
+  payload: { token },
 });
 
 // Action pour gérer l'échec de connexion de l'utilisateur
@@ -47,24 +48,23 @@ export const loginUser = (email, password, navigate, rememberMe) => {
           sessionStorage.setItem("token", token);
         }
         navigate("/user-account");
-        dispatch(userLoginSuccess());
+        dispatch(userLoginSuccess(token));
       }
-      else if (response.status === 400 || response.status === 500) {
+
+
+    } catch (error) {
+
+      if (error.response.status === 400 || error.response.status === 500) {
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
 
-        if (response.status === 400) {
-          dispatch(userLoginFailure("Identifiants incorrects."));
+        if (error.response.status === 400) {
+          dispatch(userLoginFailure(error.response.data.message));
         } else {
           dispatch(userLoginFailure("Erreur interne du serveur."));
         }
         navigate("/login");
       }
-
-    } catch (error) {
-      dispatch(userLoginFailure("Une erreur s'est produite lors de la connexion."));
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
     }
   };
 };
