@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './form.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,16 +13,36 @@ const Form = () => {
   const loginError = useSelector((state) => state.auth.loginError);
   const navigate = useNavigate();
 
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
+
   const handleSignIn = (e) => {
     e.preventDefault();
     dispatch(loginUser(email, password, navigate, rememberMe));
+    if (rememberMe) {
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+    }
   };
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("password");
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
 
   let errorMessage = null;
   if (loginError) {
     errorMessage = <p style={{ color: 'red' }}>{loginError}</p>;
   };
-
 
   return (
     <main className="main bg-dark">
@@ -55,7 +75,7 @@ const Form = () => {
               type="checkbox"
               id="remember-me"
               checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
+              onChange={handleRememberMeChange}
             />
             <label htmlFor="remember-me">Remember me</label>
           </div>
